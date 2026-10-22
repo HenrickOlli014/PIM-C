@@ -1,9 +1,15 @@
-const back_color = document.querySelectorAll(".back-color");
 const tema = document.getElementById("tema");
+const icon = document.querySelectorAll(".img-option");
 
 function aplicarTema(valor) {
-    back_color.forEach((el) => {
+    document.querySelectorAll(".back-color").forEach((el) => {
         el.classList.toggle("light", valor === "light");});
+
+
+    document.querySelectorAll(".img-option").forEach((img) => {
+        img.src = valor === "light" ? img.dataset.light : img.dataset.dark;
+    });
+
 }
 
 tema.addEventListener("change", () => {
@@ -38,6 +44,18 @@ buttonHome.addEventListener("click", () => show(pageHome));
 buttonHistoric.addEventListener("click", () => show(pageHistoric));
 
 show(pageHome);
+
+
+const seePassword = document.getElementById("seePassword");
+const passwordInput = document.getElementById("passwordInput");
+
+seePassword.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+    } else {
+        passwordInput.type = "password";
+    }
+});
 
 
 
