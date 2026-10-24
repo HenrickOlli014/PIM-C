@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="back-color">
+    <header id="cabecalho" class="back-color">
+        <div id="options">
+            <img src="images/casa_light.png" 
+            data-dark="images/casa_dark.png"
+            data-light="images/casa_light.png"  
+            alt="Home" class="img-option" id="buttonHome">
+            <img src="images/historia_light.png"
+            data-dark="images/historia_dark.png"
+            data-light="images/historia_light.png" 
+            alt="Histórico" class="img-option" id="buttonHistoric">
+            <img src="images/engrenagem_light.png" 
+            data-dark="images/engrenagem_dark.png"
+            data-light="images/engrenagem_light.png" 
+            alt="Home" class="img-option" id="buttonConfig">
+        </div>
+    </header>
+
+    <div id="page-home">
+        <button type="button" id="buttonCall">
+            Abrir Chamado
+        </button>
+    </div>
+
+    <div id="page-historic">
+        
+    </div>
+
+    <div id="page-config">
+        <div id="tema-select" class="lightMode">
+            <h2>Modo</h2>
+            <select id="tema" class="back-color">
+                <option value="light">Claro</option>
+                <option value="black">Escuro</option>
+            </select>
+        </div>
+    </div>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -28,6 +28,7 @@ const pageConfig = document.getElementById("page-config");
 const pageHome = document.getElementById("page-home");
 const pageHistoric = document.getElementById("page-historic");
 
+
 const secoes = [pageConfig, pageHistoric, pageHome];
 
 const buttonHome = document.getElementById("buttonHome");
@@ -44,20 +45,3 @@ buttonHome.addEventListener("click", () => show(pageHome));
 buttonHistoric.addEventListener("click", () => show(pageHistoric));
 
 show(pageHome);
-
-
-const seePassword = document.getElementById("seePassword");
-const passwordInput = document.getElementById("passwordInput");
-
-seePassword.addEventListener("click", () => {
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-    } else {
-        passwordInput.type = "password";
-    }
-});
-
-
-
-
-
