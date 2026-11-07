@@ -1,0 +1,534 @@
+body {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin: 0;
+    background-color: var(--background);
+    transition: background-color 0.2s ease-in-out;
+    
+}
+
+/* Cores Tema */
+
+:root {
+    color-scheme: dark;
+    --background: rgb(51, 51, 51);
+    --text: rgb(255, 255, 255);
+    --text-invert: rgb(0, 0, 0);
+    --color-base: #2A2147;
+    --hover-border: #8B5CF6;
+    --positive: rgb(122, 190, 18);
+    --negative: rgb(167, 0, 0);
+}
+
+/* CABEÇALHO */
+
+#cabecalho {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background-color: transparent;
+    border-bottom: 1px solid var(--hover-border);
+    height: 85px;
+    min-width: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+#options {
+    display: flex;
+    background: linear-gradient(165deg, var(--background) 70%, var(--hover-border));
+    height: 100%;
+    width: -webkit-fill-available;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 15%;
+}
+
+.img-option {
+    height: 60%;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.img-option:hover {
+    height: 65%;
+    transition: 0.2s ease-in-out;
+}
+
+/* PAGES */
+
+#page-config, #page-home, #page-historic {
+    display: flex;
+    position: relative;
+    padding-bottom: 20px;
+    justify-content: center;
+    min-height: 91.5vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+#tema-select {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+    color: var(--text);
+    padding: 10px;
+    height: 7%;
+    width: 80%;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    gap: 15px;
+    border-radius: 15px;
+    transition: 0.3s ease;
+    isolation: isolate;
+    opacity: 1;
+    cursor: default;
+}
+
+#tema-select::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 0;
+    border-radius: 15px;
+    background: linear-gradient(-165deg, var(--color-base) 60%, var(--hover-border));
+    transition: width 0.2s ease-out;
+    z-index: -1;
+}
+
+#tema-select:hover::before {
+    width: 100%;
+}
+
+#tema {
+    height: 30px;
+    width: 80%;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s ease-in-out;
+    outline: none;
+}
+
+#tema-select:hover {
+    height: 7.2%;
+    transition: 0.3s ease-in-out;
+    opacity: 1;
+    color: var(--text-invert);
+}
+
+/* Login */
+
+#Login {
+    display: flex;
+    height: 100vh;
+    
+}
+
+#formLogin {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 45px;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(310deg, var(--color-base) 60%, var(--hover-border));
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    transition: 0.3s ease-in-out;
+    animation: lightsLogin 1s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate forwards;
+}
+
+.boxTitle {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 65%;
+}
+
+.title {
+    display: flex;
+    width: 80%;
+    margin: 0;
+    color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#passwordInput, #emailInput {
+    width: 80%;
+    height: 45px;
+    border: none;
+    border-radius: 7px;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    padding-left: 15px;
+    background: var(--background);
+    color: var(--text);
+    font-size: 15px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    outline: none;
+    transition: 0.4s ease-in-out;
+}
+
+#passwordInput:hover, #emailInput:hover {
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 0 20px rgb(0, 0, 0);
+    height: 55px;
+}
+
+#seePassword {
+    height: 47%;
+    width: 4%;
+    position: absolute;
+    right: 10%;
+    bottom: 7%;
+}
+
+#buttonForm {
+    margin-top: 25px;
+    width: 45%;
+    height: 55px;
+    border: none;
+    border-radius: 15px;
+    background: var(--color-base);
+    color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    transition: 0.4s ease-in-out;
+}
+
+#buttonForm:hover {
+    width: 46%;
+    height: 60px;
+    font-size: 22px;
+    background: var(--hover-border);
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 0 20px rgb(0, 0, 0);
+}
+
+@keyframes lightsLogin {
+    0% {background: linear-gradient(310deg, var(--color-base) 70%, var(--hover-border));}
+    25% {background: linear-gradient(310deg, var(--color-base) 72%, var(--hover-border));}
+    50% {background: linear-gradient(310deg, var(--color-base) 74%, var(--hover-border));}
+    75% {background: linear-gradient(310deg, var(--color-base) 72%, var(--hover-border));}
+    100% {background: linear-gradient(310deg, var(--color-base) 70%, var(--hover-border));}
+}
+
+/* HOME */
+
+#buttonCall {
+    width: 60%;
+    height: 140px;
+    margin-top: 40px;
+    font-size: 50px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    background-color: white;
+    color: black;
+    transform: scale(1);
+    transition: 0.4s ease-in-out;
+}
+
+#buttonCall:hover {
+    transform: scale(1.02);
+    background-color: rgb(138, 209, 32);
+    transition: 0.3s ease-in-out;
+}
+
+
+/* CALL */
+
+/*#boxCall {
+    display: flex;
+    position: sticky;
+    background-color: var(--color-base);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    width: 20vh;
+    top: 5px;
+    height: 90.5vh;
+    transition: 0.7s ease-in-out;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    z-index: 2;
+} */
+
+/*#boxCall:hover {
+    width: 100vh;
+    transition: 0.7s ease-in-out;
+} */
+
+#contCall {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: first baseline;
+    align-items: center;
+    background: var(--background);
+    min-height: 90vh;
+    width: 100%;
+    transition: 0.7s ease-in-out;
+    gap: 70px;
+}
+
+#question {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    top: 40px;
+    height: 100px;
+    width: 100%;
+    font-size: 150%;
+    cursor: default;
+}
+
+#boxOption {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 45%;
+    gap: 40px;
+}
+
+#callboxOption {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 45%;
+    gap: 120px;
+}
+
+.callOption {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+    height: 90px;
+    width: 100%;
+    transform: scale(0.99);
+    gap: 20px;
+    border-radius: 15px;
+    transition: 0.4s ease-in-out;
+    font-size: 150%;
+    isolation: isolate;
+    box-shadow: inset 0 0 10px rgb(0, 0, 0);
+    cursor: pointer;
+    font-variant: small-caps;
+    transition: 0.3s ease-in-out;
+}
+
+.callOption::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    border-radius: 15px;
+    background: linear-gradient(310deg, var(--color-base) 70%, var(--hover-border));
+    transition: 0.3s ease-in-out;
+    z-index: -1;
+}
+.callOption:hover::before {
+    width: 100%;
+    border: 2px solid var(--hover-border);
+    box-shadow: inset 0 0 10px var(--hover-border);
+}
+
+.callOption:hover {
+    transform: scale(1.02);
+    font-size: 153%;
+    transition: 0.4s ease-in-out;
+}
+
+#callOne  {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    gap: 20px;
+    width: 70%;
+    height: 150px;
+    transition: 0.3s ease-in-out;
+}
+
+
+#problem {
+    font-weight: 700;
+    border-radius: 5px;
+    border: black;
+    width: 70%;
+    height: 35%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgb(0, 0, 0);
+    transition: 0.3s ease-in-out;
+}
+
+#problem:hover {
+    box-shadow: 0 0 0 2px var(--hover-border);
+}
+
+#callTwo {
+    display: none;
+    justify-content: center;
+    border-radius: 15px;
+    box-shadow: inset 0 0 10px var(--hover-border), 0 0 10px black;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 5%;
+    padding-right: 5%;
+    gap: 30px;
+    width: 70%;
+    min-height: 40vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background: linear-gradient(195deg,var(--color-base) 20%, var(--hover-border), var(--color-base));
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+}
+
+.open {
+    animation: open 1s ease-in-out forwards;
+}
+
+#callTwo:hover {
+    box-shadow: inset 0 0 10px var(--hover-border);
+}
+
+#buttonopenCall {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    transform: scale(1);
+    width: 50%;
+    height: 50px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 5px black;
+    background: gray;
+    transition: 0.3s ease-in-out;
+}
+
+#buttonopenCall:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 10px black;
+}
+
+.color {
+    animation: color 1s ease-in-out forwards;
+}
+
+#emailCall {
+    display: flex;
+    position: relative;
+    padding-top: 40px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    min-height: 70vh;
+    width: 100%;
+    margin: 0;
+}
+
+#descricao, #emailDescricao {
+    display: flex;
+    width: 80%;
+    border: 1px solid gray;
+    min-height: 50px;
+    font-size: 15px;
+}
+
+.titleDescricao {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+    font-size: 150%;
+    cursor: default;
+}
+
+#solicitacao {
+    display: flex;
+    width: 25%;
+    background: gray;
+    border: none;
+    height: 45px;
+    font-size: 20px;
+    transform: scale(1);
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    box-shadow: 0 0 5px black;
+    bottom: 20px;
+    transition: 0.3s ease-in-out;
+}
+
+#solicitacao:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 10px black;
+}
+
+
+
+/*Config*/
+
+#deslog {
+    width: 50%;
+    height: 90px;
+    margin-top: 40px;
+    font-size: 40px;
+    border-radius: 5px;
+    border: none;
+    transform: scale(0.99);
+    background-color: rgb(207, 1, 1);
+    transition: 0.3s ease-in-out;
+    opacity: 0.7;
+}
+
+#deslog:hover {
+    transform: scale(1);
+    background-color: rgb(250, 32, 32);
+    box-shadow: 0 0 10px rgb(250, 81, 81);
+    opacity: 1;
+}
+
+/* Keyframes */
+
+
+@keyframes color {
+    from {background: gray;}
+    to {background: rgb(122, 190, 18)}
+}
+
+
+
+
+
+@keyframes open {
+    from {opacity: 0; transform: translateY(-20%);}
+    to {opacity: 1; transform: translateY(0%);}
+}
