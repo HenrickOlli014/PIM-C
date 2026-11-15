@@ -13,9 +13,9 @@ const descricao = document.getElementById("descricao");
 function verificarEmail() {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const empty = emailDescricao.value.trim();
-    
-    
+
     if (regex.test(empty)) {
+        emailDescricao.style.border = "1px solid gray";   // volta ao normal quando o email fica válido
         return true
     }else {
         emailDescricao.style.border = "1px solid red";
@@ -52,13 +52,15 @@ solicitacao.addEventListener("mouseenter", () => {
 const pageConfig = document.getElementById("page-config");
 const pageHome = document.getElementById("page-home");
 const pageHistoric = document.getElementById("page-historic");
+const pageChamado = document.getElementById("pageChamado");
 
 
-const secoes = [pageConfig, pageHistoric, pageHome];
+const secoes = [pageConfig, pageHistoric, pageHome, pageChamado];
 
 const buttonHome = document.getElementById("buttonHome");
 const buttonHistoric = document.getElementById("buttonHistoric");
 const buttonConfig = document.getElementById("buttonConfig");
+const buttonChamado = document.getElementById("buttonChamado");
 
 function show(section) {
     secoes.forEach ((s) => (s.style.display = "none"));
@@ -68,6 +70,7 @@ function show(section) {
 buttonConfig.addEventListener("click", () => show(pageConfig));
 buttonHome.addEventListener("click", () => show(pageHome));
 buttonHistoric.addEventListener("click", () => show(pageHistoric));
+buttonChamado.addEventListener("click", () => show(pageChamado));
 
 show(pageHome);
 
@@ -163,6 +166,8 @@ const categorias = {
 
 const selectProblem = document.getElementById("problem");
 
+let categoriaAtual = '';
+
 
 function preencherProblemas(categoria) {
     selectProblem.innerHTML = '<option value="">Selecione o problema</option>';
@@ -171,6 +176,7 @@ function preencherProblemas(categoria) {
     const option = document.createElement("option");
     option.value = problema;
     option.textContent = problema;
+    categoriaAtual = categoria;
     selectProblem.appendChild(option);
     });
 }
@@ -433,15 +439,151 @@ buttonopenCall.addEventListener("click", () => {
   solicitacao.classList.remove("color");
 })
 
+solicitacao.addEventListener("click", async () => {
+  if (!categoriaAtual || !selectProblem.value) {
+    alert("Escolha a categoria e o problema antes de enviar.");
+    return;
+  }
+
+  if (!verificarEmail() || !validarCampo()) {
+    alert("Preencha a descrição e um email válido.");
+    return;
+  }
+  if (descricao.value.trim().length > 1000) {
+    alert("A descrição pode ter no máximo 1000 caracteres.");
+    return;
+  }
+
+  try {
+    const resposta = await fetch("/chamados", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        categoria: categoriaAtual,
+        problema: selectProblem.value,
+        email: emailDescricao.value.trim(),
+        descricao: descricao.value.trim()
+      })
+    });
+    if (resposta.status === 401) {         
+      alert("Sua sessão expirou. Entre novamente.");
+      window.location.href = "/index.html";
+      return;
+    }
+    const dados = await resposta.json();
+    alert(dados.mensagem);
+
+    if (resposta.ok) {
+      descricao.value = "";
+      emailDescricao.value = "";
+      descricao.style.border = "1px solid gray";
+      emailDescricao.style.border = "1px solid gray";
+      show(pageHome);
+    }
+  } catch {
+    alert("Não consegui falar com o servidor. Ele está rodando?");
+  }
+});
+
 
 const deslog = document.getElementById("deslog");
 
-deslog.addEventListener("click", () => {
-  window.location.href ="index.html";
+deslog.addEventListener("click", async () => {
+  await fetch("/logout", { method: "POST" });
+  window.location.href = "/index.html";
 })
 
 /*showOption(null);*/
 
+// ---------- Ver meus chamados (pede a senha) ----------
 
+const formVerChamados = document.getElementById("formVerChamados");
+const senhaConfirmar = document.getElementById("senhaConfirmar");
+const listaChamados = document.getElementById("listaChamados");
 
+function limparChamados() {
+  senhaConfirmar.value = "";
+  listaChamados.textContent = "";
+}
 
+// ao sair da aba de chamados, some a lista e a senha digitada
+[buttonHome, buttonHistoric, buttonConfig].forEach((botao) => {
+  botao.addEventListener("click", limparChamados);
+});
+
+buttonChamado.addEventListener("click", () => {
+  limparChamados();
+  senhaConfirmar.focus();
+});
+
+function novoElemento(tag, classe, texto) {
+  const el = document.createElement(tag);
+  if (classe) el.className = classe;
+  el.textContent = texto;          // textContent: o texto do usuário nunca vira HTML
+  return el;
+}
+
+function desenharChamados(chamados) {
+  listaChamados.textContent = "";
+
+  if (chamados.length === 0) {
+    listaChamados.appendChild(novoElemento("p", "chamadoVazio", "Você ainda não abriu nenhum chamado."));
+    return;
+  }
+
+  chamados.forEach((c) => {
+    const card = document.createElement("div");
+    card.className = "chamadoCard";
+
+    const topo = document.createElement("div");
+    topo.className = "chamadoTopo";
+    topo.appendChild(novoElemento("h3", "", "Chamado #" + c.id));
+    topo.appendChild(novoElemento("span", "chamadoStatus", c.status));
+
+    // o banco guarda a hora em UTC; aqui vira a hora local de quem está vendo
+    const data = new Date(c.criado_em.replace(" ", "T") + "Z").toLocaleString("pt-BR");
+
+    card.appendChild(topo);
+    card.appendChild(novoElemento("strong", "", c.categoria + " — " + c.problema));
+    card.appendChild(novoElemento("p", "chamadoDescricao", c.descricao));
+    card.appendChild(novoElemento("span", "chamadoRodape", "Contato: " + c.email_contato + " • Aberto em " + data));
+
+    listaChamados.appendChild(card);
+  });
+}
+
+formVerChamados.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (senhaConfirmar.value === "") {
+    alert("Digite sua senha.");
+    return;
+  }
+
+  try {
+    const resposta = await fetch("/meus-chamados", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: senhaConfirmar.value })
+    });
+
+    if (resposta.status === 401) {          // o login expirou
+      alert("Sua sessão expirou. Entre novamente.");
+      window.location.href = "/index.html";
+      return;
+    }
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {                     // senha incorreta ou muitas tentativas
+      alert(dados.mensagem);
+      senhaConfirmar.value = "";
+      return;
+    }
+
+    senhaConfirmar.value = "";              // a senha não fica na tela
+    desenharChamados(dados);
+  } catch {
+    alert("Não consegui falar com o servidor. Ele está rodando?");
+  }
+});

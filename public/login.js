@@ -1,4 +1,13 @@
-const buttonForm = document.getElementById("buttonForm");
+function none(object) {
+  object.style.display = "none";
+}
+function flex(object) {
+  object.style.display = "flex";
+}
+
+const buttonEntrar = document.getElementById('buttonEntrar');
+const buttonCadastrar = document.getElementById('buttonCadastrar');
+const possuiLogin = document.getElementById('entrarLogin');
 const password = document.getElementById('passwordInput');
 const email = document.getElementById('emailInput');
 
@@ -40,26 +49,46 @@ function validarSenha() {
     }
 }
 
-buttonForm.addEventListener("mouseenter", () => {
+buttonCadastrar.addEventListener("mouseenter", () => {
+    verificarEmail();
+    validarSenha();
+})
+buttonEntrar.addEventListener("mouseenter", () => {
     verificarEmail();
     validarSenha();
 })
 
+let modoCadastro = true;   // a tela começa no modo "Cadastrar"
+
+possuiLogin.addEventListener("click", () => {
+  modoCadastro = !modoCadastro;
+
+  if (modoCadastro) {
+    possuiLogin.textContent = 'Já possui uma conta?';
+    flex(buttonCadastrar);
+    none(buttonEntrar);
+  } else {
+    possuiLogin.textContent = 'Não possui uma conta?';
+    flex(buttonEntrar);
+    none(buttonCadastrar);
+  }
+})
+
 const form = document.getElementById("formLogin");
+
+const MSG_INVALIDO = 'Email inválido ou senha fraca: mínimo 8 caracteres, com maiúscula, minúscula, número e caractere especial';
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    if (!verificarEmail() || !validarSenha()) {
-        alert('Email inválido ou senha fraca: mínimo 8 caracteres, com maiúscula, minúscula, número e caractere especial');
-        return;
-    }
+    if (!verificarEmail() || !validarSenha()) { alert(MSG_INVALIDO); return; }
 
     try {
-        const r = await send('/cadastro');
-        alert(r.mensagem);
+        // o modo da tela escolhe a rota (vale também quando a pessoa aperta Enter)
+        const r = await send(modoCadastro ? '/cadastro' : '/login');
         if (r.ok) {
-            window.location.href = '/page.html'; // só vai depois de gravar no banco
+            window.location.href = '/page.html';   // cadastro e login deixam a pessoa logada
+        } else {
+            alert(r.mensagem);
         }
     } catch {
         alert('Não consegui falar com o servidor. Ele está rodando?');
@@ -93,13 +122,4 @@ async function send(rota) {
     });
     const dados = await resposta.json();
     return { ok: resposta.ok, mensagem: dados.mensagem };
-}
-
-async function enter() {
-    const r = await send('/login');
-    if (r.ok) {
-        window.location.href = '/page.html';
-    } else {
-        alert(r.mensagem);
-    }
 }

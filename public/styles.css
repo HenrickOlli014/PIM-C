@@ -59,7 +59,7 @@ body {
 
 /* PAGES */
 
-#page-config, #page-home, #page-historic {
+#page-config, #page-home, #page-historic, #pageChamado {
     display: flex;
     position: relative;
     padding-bottom: 20px;
@@ -191,7 +191,7 @@ body {
     bottom: 7%;
 }
 
-#buttonForm {
+#buttonEntrar, #buttonCadastrar {
     margin-top: 25px;
     width: 45%;
     height: 55px;
@@ -206,13 +206,29 @@ body {
     transition: 0.4s ease-in-out;
 }
 
-#buttonForm:hover {
+#buttonEntrar {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#buttonCadastrar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#buttonEntrar:hover, #buttonCadastrar:hover {
     width: 46%;
     height: 60px;
     font-size: 22px;
     background: var(--hover-border);
     transition: 0.3s ease-in-out;
     box-shadow: 0 0 20px rgb(0, 0, 0);
+}
+
+#entrarLogin {
+    cursor: pointer;
 }
 
 @keyframes lightsLogin {

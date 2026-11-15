@@ -1,1 +1,5 @@
-SELECT * FROM usuarios;
+DELETE FROM sqlite_sequence WHERE name = 'chamados';
+
+
+
+
