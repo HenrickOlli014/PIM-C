@@ -146,7 +146,7 @@ void abrir_chamado(long long id) {
     sqlite3_stmt *stmt;
     const char *sql =
         "SELECT categoria, problema, email_contato, descricao, status, "
-        "datetime(criado_em, 'localtime') FROM chamados WHERE id = ?";
+        "strftime('%d/%m/%Y %H:%M', criado_em, 'localtime') FROM chamados WHERE id = ?";
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         printf("Erro no SQL: %s\n", sqlite3_errmsg(db));
         pausa();
