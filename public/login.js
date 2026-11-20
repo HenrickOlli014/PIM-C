@@ -103,11 +103,9 @@ const seePassword = document.getElementById("seePassword");
 const passwordInput = document.getElementById("passwordInput");
 
 seePassword.addEventListener("click", () => {
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-    } else {
-        passwordInput.type = "password";
-    }
+    const oculto = passwordInput.type === "password";
+    passwordInput.type = oculto ? "text" : "password";
+    seePassword.src = oculto ? "images/olho-revelado.png" : "images/olho-revelar.png"; 
 });
 
 

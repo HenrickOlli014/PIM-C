@@ -1,4 +1,5 @@
-DELETE FROM sqlite_sequence WHERE name = 'chamados';
+DELETE FROM usuarios WHERE id = 1;
+DELETE FROM usuarios WHERE id = 2;
 
 
 

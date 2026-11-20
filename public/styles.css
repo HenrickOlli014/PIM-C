@@ -164,7 +164,7 @@ body {
 
 #passwordInput, #emailInput {
     width: 80%;
-    height: 45px;
+    height: 50px;
     border: none;
     border-radius: 7px;
     box-shadow: 0 0 10px rgb(0, 0, 0);
@@ -184,11 +184,11 @@ body {
 }
 
 #seePassword {
-    height: 47%;
+    height: 45px;
     width: 4%;
     position: absolute;
     right: 10%;
-    bottom: 7%;
+    top: 44%;
 }
 
 #buttonEntrar, #buttonCadastrar {
@@ -265,24 +265,6 @@ body {
 
 /* CALL */
 
-/*#boxCall {
-    display: flex;
-    position: sticky;
-    background-color: var(--color-base);
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
-    width: 20vh;
-    top: 5px;
-    height: 90.5vh;
-    transition: 0.7s ease-in-out;
-    box-shadow: 0 0 10px rgb(0, 0, 0);
-    z-index: 2;
-} */
-
-/*#boxCall:hover {
-    width: 100vh;
-    transition: 0.7s ease-in-out;
-} */
 
 #contCall {
     display: flex;
@@ -468,6 +450,13 @@ body {
     margin: 0;
 }
 
+#formVerChamados {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #descricao, #emailDescricao {
     display: flex;
     width: 80%;
@@ -476,7 +465,7 @@ body {
     font-size: 15px;
 }
 
-.titleDescricao {
+.titleDescricao, .titleChamados {
     display: flex;
     position: relative;
     justify-content: center;
@@ -503,14 +492,42 @@ body {
     transition: 0.3s ease-in-out;
 }
 
-#solicitacao:hover {
+#solicitacao:hover, #buttonVerChamados:hover {
     transform: scale(1.04);
     box-shadow: 0 0 10px black;
+}
+
+#buttonVerChamados {
+    display: flex;
+    width: 60%;
+    background: gray;
+    border: none;
+    height: 45px;
+    font-size: 20px;
+    transform: scale(1);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 5px black;
+    transition: 0.3s ease-in-out;  
+    margin-top: 50px;
+    margin-bottom: 80px;  
+}
+
+#senhaConfirmar {
+    width: 90%;
+    height: 30px;
 }
 
 
 
 /*Config*/
+
+#page-config {
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 70px;
+}
 
 #deslog {
     width: 50%;
@@ -520,7 +537,7 @@ body {
     border-radius: 5px;
     border: none;
     transform: scale(0.99);
-    background-color: rgb(207, 1, 1);
+    background-color: var(--color-base);
     transition: 0.3s ease-in-out;
     opacity: 0.7;
 }
@@ -531,6 +548,28 @@ body {
     box-shadow: 0 0 10px rgb(250, 81, 81);
     opacity: 1;
 }
+
+#verificarChamados {
+    width: 50%;
+    height: 90px;
+    font-size: 40px;
+    border-radius: 5px;
+    border: none;
+    transform: scale(0.99);
+    background-color: var(--color-base);
+    transition: 0.3s ease-in-out;
+    opacity: 0.7;
+}
+
+#verificarChamados:hover {
+    transform: scale(1);
+    background-color: var(--hover-border);
+    box-shadow: 0 0 10px var(--hover-border);
+    opacity: 1;
+}
+
+
+
 
 /* Keyframes */
 
@@ -547,4 +586,33 @@ body {
 @keyframes open {
     from {opacity: 0; transform: translateY(-20%);}
     to {opacity: 1; transform: translateY(0%);}
+}
+
+
+.chamadoCard {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    border-radius: 15px;
+    transform: scale(1);
+    border: none;
+    box-shadow: 0 0 5px black;
+    margin-bottom: 50px;
+    transition: 0.3s ease-in-out;
+    padding-bottom: 2%;
+}
+
+.chamadoCard:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 10px black;
+    transition: 0.3s ease-in-out;
+}
+
+.chamadoStatus, .chamadoDescricao {
+    font-size: medium;
+    text-align: center;
 }

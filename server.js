@@ -4,6 +4,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { DatabaseSync } = require('node:sqlite');
 const { salvarChamadoComC } = require('./ponte');
+const { exec } = require('node:child_process');
  
 const PORTA = 3000;
 const SESSAO_MS = 2 * 60 * 60 * 1000;   // o login vale por 2 horas
@@ -35,6 +36,9 @@ if (!colunas.includes('usuario_id')) {
     db.exec('ALTER TABLE chamados ADD COLUMN usuario_id INTEGER');
 }
 db.exec('CREATE INDEX IF NOT EXISTS idx_chamados_usuario ON chamados(usuario_id)');
+if (!colunas.includes('motivo_cancelamento')) {
+    db.exec('ALTER TABLE chamados ADD COLUMN motivo_cancelamento TEXT');
+}
  
  
 // ---------- Senha ----------
@@ -225,13 +229,26 @@ const server = http.createServer(async (req, res) => {
       falhasSenha.delete(s.usuarioId);
 
       const lista = db.prepare(`
-        SELECT id, categoria, problema, email_contato, descricao, status, criado_em
+        SELECT id, categoria, problema, email_contato, descricao, status, criado_em, motivo_cancelamento
         FROM chamados WHERE usuario_id = ? ORDER BY id DESC
       `).all(s.usuarioId);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       return res.end(JSON.stringify(lista));
     }
  
+    // ABRIR O TERMINAL DO ADMINISTRADOR (abre na máquina onde o servidor está rodando)
+    if (req.method === 'POST' && req.url === '/abrir-admin') {
+      if (!sessaoDe(req)) return responder(res, 401, 'Faça login');
+      if (process.platform !== 'win32') return responder(res, 501, 'O terminal do administrador só abre no Windows');
+      const exe = path.join(__dirname, 'c', 'admin.exe');
+      const banco = path.join(__dirname, 'bd.db');
+      if (!fs.existsSync(exe)) return responder(res, 500, 'admin.exe não encontrado na pasta c');
+      exec(`start "Painel Administrativo" "${exe}" "${banco}"`, { cwd: __dirname }, (erro) => {
+        if (erro) console.log('Erro ao abrir o admin:', erro.message);
+      });
+      return responder(res, 200, 'Terminal aberto');
+    }
+
     // PÁGINA PROTEGIDA
     if (req.method === 'GET' && req.url === '/page.html') {
       if (!sessaoDe(req)) {

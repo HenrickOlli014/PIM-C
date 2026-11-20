@@ -500,6 +500,7 @@ deslog.addEventListener("click", async () => {
 const formVerChamados = document.getElementById("formVerChamados");
 const senhaConfirmar = document.getElementById("senhaConfirmar");
 const listaChamados = document.getElementById("listaChamados");
+const buttonVerChamados = document.getElementById("buttonVerChamados");
 
 function limparChamados() {
   senhaConfirmar.value = "";
@@ -509,11 +510,15 @@ function limparChamados() {
 // ao sair da aba de chamados, some a lista e a senha digitada
 [buttonHome, buttonHistoric, buttonConfig].forEach((botao) => {
   botao.addEventListener("click", limparChamados);
+  buttonVerChamados.classList.remove("color");
 });
 
 buttonChamado.addEventListener("click", () => {
   limparChamados();
   senhaConfirmar.focus();
+  setTimeout (() => {
+    buttonVerChamados.classList.add("color");
+  }, 200)
 });
 
 function novoElemento(tag, classe, texto) {
@@ -521,6 +526,17 @@ function novoElemento(tag, classe, texto) {
   if (classe) el.className = classe;
   el.textContent = texto;          // textContent: o texto do usuário nunca vira HTML
   return el;
+}
+
+// o que aparece no lugar da descrição, conforme o status do chamado
+function textoDoChamado(c) {
+  if (c.status === "concluido") {
+    return "Chamado concluído. Verifique a caixa de e-mail " + c.email_contato + " para mais informações.";
+  }
+  if (c.status === "cancelado") {
+    return "Chamado cancelado. Motivo: " + (c.motivo_cancelamento || "não informado");
+  }
+  return c.descricao;
 }
 
 function desenharChamados(chamados) {
@@ -538,15 +554,15 @@ function desenharChamados(chamados) {
     const topo = document.createElement("div");
     topo.className = "chamadoTopo";
     topo.appendChild(novoElemento("h3", "", "Chamado #" + c.id));
-    topo.appendChild(novoElemento("span", "chamadoStatus", c.status));
+    topo.appendChild(novoElemento("p", "chamadoStatus", c.status));
 
     // o banco guarda a hora em UTC; aqui vira a hora local de quem está vendo
     const data = new Date(c.criado_em.replace(" ", "T") + "Z").toLocaleString("pt-BR");
 
     card.appendChild(topo);
     card.appendChild(novoElemento("strong", "", c.categoria + " — " + c.problema));
-    card.appendChild(novoElemento("p", "chamadoDescricao", c.descricao));
-    card.appendChild(novoElemento("span", "chamadoRodape", "Contato: " + c.email_contato + " • Aberto em " + data));
+    card.appendChild(novoElemento("p", "chamadoDescricao", textoDoChamado(c)));
+    card.appendChild(novoElemento("span", "chamadoRodape", " • Aberto em " + data));
 
     listaChamados.appendChild(card);
   });
@@ -583,6 +599,26 @@ formVerChamados.addEventListener("submit", async (e) => {
 
     senhaConfirmar.value = "";              // a senha não fica na tela
     desenharChamados(dados);
+  } catch {
+    alert("Não consegui falar com o servidor. Ele está rodando?");
+  }
+});
+
+// ---------- Terminal do administrador ----------
+const verificarChamados = document.getElementById("verificarChamados");
+
+verificarChamados.addEventListener("click", async () => {
+  try {
+    const resposta = await fetch("/abrir-admin", { method: "POST" });
+    if (resposta.status === 401) {
+      alert("Sua sessão expirou. Entre novamente.");
+      window.location.href = "/index.html";
+      return;
+    }
+    if (!resposta.ok) {
+      const dados = await resposta.json();
+      alert(dados.mensagem);
+    }
   } catch {
     alert("Não consegui falar com o servidor. Ele está rodando?");
   }
