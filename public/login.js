@@ -58,7 +58,7 @@ buttonEntrar.addEventListener("mouseenter", () => {
     validarSenha();
 })
 
-let modoCadastro = true;   // a tela começa no modo "Cadastrar"
+let modoCadastro = true;   
 
 possuiLogin.addEventListener("click", () => {
   modoCadastro = !modoCadastro;
@@ -83,7 +83,7 @@ form.addEventListener("submit", async (e) => {
     if (!verificarEmail() || !validarSenha()) { alert(MSG_INVALIDO); return; }
 
     try {
-        // o modo da tela escolhe a rota (vale também quando a pessoa aperta Enter)
+        
         const r = await send(modoCadastro ? '/cadastro' : '/login');
         if (r.ok) {
             window.location.href = '/page.html';   // cadastro e login deixam a pessoa logada

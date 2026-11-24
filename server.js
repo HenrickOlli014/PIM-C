@@ -68,7 +68,6 @@ const sessoes = new Map();
 function iniciarSessao(usuarioId) {
     const token = crypto.randomBytes(32).toString('hex');
     sessoes.set(token, { usuarioId, expira: Date.now() + SESSAO_MS });
-    // quando publicar com HTTPS, acrescente "; Secure"
     return `sessao=${token}; HttpOnly; SameSite=Strict; Path=/; Max-Age=${SESSAO_MS / 1000}`;
 }
  
@@ -82,7 +81,7 @@ function sessaoDe(req) {
  
  
 // ---------- Limite de tentativas ao confirmar a senha ----------
-const falhasSenha = new Map();   // usuarioId -> { qtd, ate }
+const falhasSenha = new Map();  
 
 function confirmacaoBloqueada(usuarioId) {
     const f = falhasSenha.get(usuarioId);
@@ -168,7 +167,6 @@ const server = http.createServer(async (req, res) => {
       const emailNorm = typeof email === 'string' ? email.trim().toLowerCase() : '';
       const usuario = db.prepare('SELECT * FROM usuarios WHERE email = ?').get(emailNorm);
  
-      // a mesma mensagem para email inexistente e senha errada
       if (!usuario || typeof password !== 'string' || !conferirSenha(password, usuario.senha_hash)) {
         return responder(res, 401, 'Email ou senha incorretos');
       }
@@ -236,7 +234,7 @@ const server = http.createServer(async (req, res) => {
       return res.end(JSON.stringify(lista));
     }
  
-    // ABRIR O TERMINAL DO ADMINISTRADOR (abre na máquina onde o servidor está rodando)
+    // ABRIR O TERMINAL DO ADMINISTRADOR 
     if (req.method === 'POST' && req.url === '/abrir-admin') {
       if (!sessaoDe(req)) return responder(res, 401, 'Faça login');
       if (process.platform !== 'win32') return responder(res, 501, 'O terminal do administrador só abre no Windows');
