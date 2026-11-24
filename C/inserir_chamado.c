@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
         return 6;
     }
  
-    printf("%lld\n", (long long)sqlite3_last_insert_rowid(db));  /* id do chamado */
+    printf("%lld\n", (long long)sqlite3_last_insert_rowid(db));  
     sqlite3_finalize(stmt);
     sqlite3_close(db);
     return 0;

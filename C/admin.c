@@ -17,7 +17,7 @@ const char *ADMINS[QTD_ADMINS] = {
 };
 const char *SENHA_ADMIN = "nig.gen.2026";
 
-/* mesmos nomes que o script.js grava no banco (categoriaAtual) */
+
 #define QTD_CATEGORIAS 5
 const char *CATEGORIAS[QTD_CATEGORIAS] = {
     "Computador",
@@ -43,7 +43,7 @@ void ler_texto(const char *aviso, char *destino, int tamanho) {
         return;
     }
     size_t len = strcspn(destino, "\r\n");
-    if (destino[len] == '\0') {            /* linha maior que o buffer: descarta o resto */
+    if (destino[len] == '\0') {            
         int c;
         while ((c = getchar()) != '\n' && c != EOF) { }
     }
@@ -55,8 +55,8 @@ void ler_senha(char *destino, int tamanho) {
     int i = 0, c;
     printf("Senha: ");
     while ((c = _getch()) != '\r' && c != '\n') {
-        if (c == 0 || c == 224) { _getch(); continue; }       /* teclas especiais */
-        if (c == 8) {                                         /* backspace */
+        if (c == 0 || c == 224) { _getch(); continue; }      
+        if (c == 8) {                                        
             if (i > 0) { i--; printf("\b \b"); }
         } else if (c >= 32 && i < tamanho - 1) {
             destino[i++] = (char)c;
@@ -75,7 +75,7 @@ void pausa(void) {
     ler_texto("\nPressione Enter para continuar...", lixo, sizeof lixo);
 }
 
-/* sqlite3_column_text pode devolver NULL */
+
 const char *texto(sqlite3_stmt *stmt, int coluna) {
     const char *t = (const char *)sqlite3_column_text(stmt, coluna);
     return t ? t : "";
@@ -190,7 +190,7 @@ void abrir_chamado(long long id) {
         cancelar_chamado(id);
         pausa();
     }
-    /* qualquer outra coisa (inclusive 3) volta para a lista */
+    
 }
 
 /* ---------- Opcao 1: verificar todos ---------- */
@@ -302,7 +302,7 @@ void data_limite(void) {
 /* ---------- Programa principal ---------- */
 int main(int argc, char *argv[]) {
 #ifdef _WIN32
-    SetConsoleOutputCP(65001);   /* acentos (UTF-8) no terminal */
+    SetConsoleOutputCP(65001);  
     SetConsoleCP(65001);
 #endif
 
@@ -314,7 +314,7 @@ int main(int argc, char *argv[]) {
     }
     sqlite3_busy_timeout(db, 3000);
 
-    /* coluna do motivo de cancelamento (se ja existir, o erro e ignorado) */
+    
     sqlite3_exec(db, "ALTER TABLE chamados ADD COLUMN motivo_cancelamento TEXT", NULL, NULL, NULL);
 
     if (!fazer_login()) {
